@@ -13,17 +13,31 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { registrationSchema } from "./registerValidation";
+import { registerAction } from "@/servicces/authServices";
+import { toast } from "sonner";
+import { PiSpinnerBallFill } from "react-icons/pi";
 
 const Register = () => {
   const form = useForm({
     resolver: zodResolver(registrationSchema),
   });
 
+  const {formState: {isSubmitting}} = form;
+
   const password = form.watch("password");
   const confirmPassword = form.watch("confirmPassword");
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FieldValues> = async(data) => {
+    try{
+      const res = await registerAction(data)
+      if(res.success){
+        toast.success(res?.message)
+      }else{
+        toast.error(res?.message)
+      }
+    }catch(err: any){
+      return Error(err)
+    }
   };
   return (
     <Form {...form}>
@@ -108,9 +122,9 @@ const Register = () => {
         />
         <Button
           disabled={!confirmPassword || password !== confirmPassword}
-          className="mt-5 w-full bg-[#693AF8] font-semibold text-xl"
+          className="mt-5 py-6 w-full bg-[#693AF8] font-semibold text-xl"
         >
-          Register
+          {isSubmitting? <PiSpinnerBallFill className="animate-spin" /> :"Register"}
         </Button>
       </form>
     </Form>
