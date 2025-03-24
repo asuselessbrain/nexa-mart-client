@@ -2,6 +2,7 @@
 import Logo from "@/assets/svg/Logo";
 import { Button } from "@/components/ui/button";
 import NMImageUploader from "@/components/ui/core/NMImageUploder";
+import ImagePreviewer from "@/components/ui/core/NMImageUploder/NMImagePreview";
 import {
   Form,
   FormControl,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
 const CreateShopForm = () => {
@@ -21,8 +23,22 @@ const CreateShopForm = () => {
     formState: { isSubmitting },
   } = form;
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [imageFiles, setImageFiles] = useState<File[] | []>([]);
+  const [imagePreview, setImagePreview] = useState<string[] | []>([]);
+
   const onSubmit = (data: FieldValues) => {
-    console.log(data);
+    try{
+      const servicesOffered =  data?.servicesOffered.split(',').map((services :string)=>services.trim()).filter((services: string)=> services !== "")
+      const modifiedData = {
+        ...data,
+        servicesOffered: servicesOffered,
+        establishedYear: Number(data?.establishedYear)
+      }
+      console.log(modifiedData);
+    }catch(err:any){
+      console.log(err);
+    }
   };
   return (
     <div className="border-2 border-gray-300 rounded-xl flex-grow max-w-2xl p-5 my-5">
@@ -194,22 +210,22 @@ const CreateShopForm = () => {
               />
             </div>
 
-            {/* {imagePreview.length > 0 ? (
+            {imagePreview.length > 0 ? (
               <ImagePreviewer
-                // setImageFiles={setImageFiles}
-                // imagePreview={imagePreview}
-                // setImagePreview={setImagePreview}
+                setImageFiles={setImageFiles}
+                imagePreview={imagePreview}
+                setImagePreview={setImagePreview}
                 className="mt-4"
               />
-            ) : ( */}
+            ) : (
               <div className="mt-4">
                 <NMImageUploader
-                //   setImageFiles={setImageFiles}
-                //   setImagePreview={setImagePreview}
-                //   label="Upload Logo"
+                  setImageFiles={setImageFiles}
+                  setImagePreview={setImagePreview}
+                  label="Upload Logo"
                 />
               </div>
-            {/* )} */}
+            )} 
           </div>
 
           <Button type="submit" className="mt-5 w-full">
