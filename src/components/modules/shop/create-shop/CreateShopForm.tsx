@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { createShopAction } from "@/servicces/shop";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
@@ -23,20 +24,26 @@ const CreateShopForm = () => {
     formState: { isSubmitting },
   } = form;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [imageFiles, setImageFiles] = useState<File[] | []>([]);
   const [imagePreview, setImagePreview] = useState<string[] | []>([]);
 
-  const onSubmit = (data: FieldValues) => {
-    try{
-      const servicesOffered =  data?.servicesOffered.split(',').map((services :string)=>services.trim()).filter((services: string)=> services !== "")
-      const modifiedData = {
-        ...data,
-        servicesOffered: servicesOffered,
-        establishedYear: Number(data?.establishedYear)
-      }
-      console.log(modifiedData);
-    }catch(err:any){
+  const onSubmit = async(data: FieldValues) => {
+    const servicesOffered = data?.servicesOffered
+      .split(",")
+      .map((services: string) => services.trim())
+      .filter((services: string) => services !== "");
+    const modifiedData = {
+      ...data,
+      servicesOffered: servicesOffered,
+      establishedYear: Number(data?.establishedYear),
+    };
+    try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(modifiedData));
+      formData.append("logo", imageFiles[0]);
+      const res = await createShopAction(formData);
+      console.log(res);
+    } catch (err: any) {
       console.log(err);
     }
   };
@@ -225,7 +232,7 @@ const CreateShopForm = () => {
                   label="Upload Logo"
                 />
               </div>
-            )} 
+            )}
           </div>
 
           <Button type="submit" className="mt-5 w-full">
