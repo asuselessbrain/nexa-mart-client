@@ -2,8 +2,8 @@ import NavBar from "@/components/shared/NavBar";
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div>
-      <div className="h-28">
+    <div className="max-w-[1440px] mx-auto">
+      <div className="h-52 lg:h-28">
         <NavBar />
       </div>
       {children}

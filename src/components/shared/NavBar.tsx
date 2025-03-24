@@ -5,12 +5,27 @@ import { useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { FaCartArrowDown } from "react-icons/fa";
 import { Button } from "../ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LogOut } from "lucide-react";
+import { useUser } from "@/context/userContext";
 
 const NavBar = () => {
+  const { user, setIsLoading } = useUser();
   const [categoryOpen, setCategoryOpen] = useState(false);
   const toggleCategory = () => setCategoryOpen(!categoryOpen);
+  const handleLogout = async()=> {
+    setIsLoading(true)
+  }
   return (
-    <header className="fixed w-full py-4 px-4 shadow-sm shadow-neutral-500 h-[--navbar-height] flex flex-col gap-6 lg:gap-0 items-center">
+    <header className="fixed w-full py-4 px-4 shadow-sm h-[--navbar-height] max-w-[1440px] flex flex-col gap-6 lg:gap-0 items-center">
       <nav className="flex flex-row justify-between items-center w-full mx-auto">
         <Link
           href="/"
@@ -107,9 +122,48 @@ const NavBar = () => {
           <div className="flex items-center gap-4 justify-end">
             <CiHeart className="cursor-pointer" size={24} />
             <FaCartArrowDown className="cursor-pointer" size={24} />
-            <Button variant="outline" className="rounded-full cursor-pointer">
-              Sign In
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger className="cursor-pointer">
+                  <Avatar>
+                    <AvatarImage src="https://github.com/shadcn.png" />
+                    <AvatarFallback>CN</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuLabel className="cursor-pointer">
+                    My Account
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer">
+                    Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    Create Shop
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    My Shop
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer">
+                    <LogOut />
+                    Sign Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Link href="/login">
+                <Button
+                  variant="outline"
+                  className="rounded-full cursor-pointer"
+                >
+                  Sign In
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </nav>
