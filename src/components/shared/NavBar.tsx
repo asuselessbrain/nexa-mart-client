@@ -16,12 +16,14 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
 import { useUser } from "@/context/userContext";
+import { logoutUser } from "@/servicces/authServices";
 
 const NavBar = () => {
   const { user, setIsLoading } = useUser();
   const [categoryOpen, setCategoryOpen] = useState(false);
   const toggleCategory = () => setCategoryOpen(!categoryOpen);
   const handleLogout = async()=> {
+    await logoutUser();
     setIsLoading(true)
   }
   return (
@@ -148,8 +150,8 @@ const NavBar = () => {
                     Profile
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem className="cursor-pointer">
-                    <LogOut />
+                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer bg-red-600 text-white hover:bg-red-500">
+                    <LogOut className="text-white" />
                     Sign Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>

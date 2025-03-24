@@ -51,20 +51,24 @@ export const getCurrentUser = async () => {
   }
 };
 
-export const reCapchaVerification = async (token:string) => {
-  try{
-    const res = await fetch('https://www.google.com/recaptcha/api/siteverify',{
+export const reCapchaVerification = async (token: string) => {
+  try {
+    const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
         secret: process.env.NEXT_PUBLIC_RECHAPCHA_SERVER_KEY!,
         response: token,
-      })
-    })
-    return res.json()
-  }catch(error: any){
-    return Error(error)
+      }),
+    });
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
   }
-}
+};
+
+export const logoutUser = async () => {
+  (await cookies()).delete("access token");
+};
