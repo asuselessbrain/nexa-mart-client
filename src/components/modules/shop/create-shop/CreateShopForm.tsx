@@ -1,6 +1,7 @@
 "use client";
 import Logo from "@/assets/svg/Logo";
 import { Button } from "@/components/ui/button";
+import NMImageUploader from "@/components/ui/core/NMImageUploder";
 import {
   Form,
   FormControl,
@@ -198,17 +199,17 @@ const CreateShopForm = () => {
                 // setImageFiles={setImageFiles}
                 // imagePreview={imagePreview}
                 // setImagePreview={setImagePreview}
-                className="mt-8"
+                className="mt-4"
               />
-            ) : (
-              <div className="mt-8">
+            ) : ( */}
+              <div className="mt-4">
                 <NMImageUploader
-                  setImageFiles={setImageFiles}
-                  setImagePreview={setImagePreview}
-                  label="Upload Logo"
+                //   setImageFiles={setImageFiles}
+                //   setImagePreview={setImagePreview}
+                //   label="Upload Logo"
                 />
               </div>
-            )} */}
+            {/* )} */}
           </div>
 
           <Button type="submit" className="mt-5 w-full">
