@@ -31,7 +31,12 @@ export const loginAction = async (data: FieldValues) => {
     const result = await res.json();
 
     if (result.success) {
-      (await cookies()).set("access token", result.data.accessToken);
+      (await cookies()).set("access token", result.data.accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      });
     }
     return result;
   } catch (error: any) {

@@ -16,6 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { createShopAction } from "@/servicces/shop";
 import { useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const CreateShopForm = () => {
   const form = useForm();
@@ -42,7 +43,11 @@ const CreateShopForm = () => {
       formData.append("data", JSON.stringify(modifiedData));
       formData.append("logo", imageFiles[0]);
       const res = await createShopAction(formData);
-      console.log(res);
+      if(res.success){
+        toast.success(res?.message)
+      }else{
+        toast.error(res?.message)
+      }
     } catch (err: any) {
       console.log(err);
     }

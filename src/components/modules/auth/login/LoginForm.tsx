@@ -18,12 +18,17 @@ import { toast } from "sonner";
 import { PiSpinnerBallFill } from "react-icons/pi";
 import { loginSchema } from "./loginValidation";
 import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginForm = () => {
   const form = useForm({
     resolver: zodResolver(loginSchema),
   });
   const [reCapchaStatue, setReCapchaStatus] = useState(false);
+
+  const searchParam = useSearchParams();
+  const redirect = searchParam.get('redirectPath');
+  const router = useRouter();
 
   const {
     formState: { isSubmitting },
@@ -45,6 +50,11 @@ const LoginForm = () => {
       const res = await loginAction(data);
       if (res.success) {
         toast.success(res?.message);
+        if(redirect){
+          router.push(redirect)
+        } else{
+          router.push('/')
+        }
       } else {
         toast.error(res?.message);
       }

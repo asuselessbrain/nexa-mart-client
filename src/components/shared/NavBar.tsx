@@ -17,15 +17,24 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut } from "lucide-react";
 import { useUser } from "@/context/userContext";
 import { logoutUser } from "@/servicces/authServices";
+import { usePathname, useRouter } from "next/navigation";
+import { protectedRoutes } from "@/constraint";
 
 const NavBar = () => {
   const { user, setIsLoading } = useUser();
+
+  const pathname = usePathname();
+  const router = useRouter();
+
   const [categoryOpen, setCategoryOpen] = useState(false);
   const toggleCategory = () => setCategoryOpen(!categoryOpen);
-  const handleLogout = async()=> {
+  const handleLogout = async () => {
     await logoutUser();
-    setIsLoading(true)
-  }
+    setIsLoading(true);
+    if (protectedRoutes.some((route) => pathname.match(route))) {
+      router.push("/");
+    }
+  };
   return (
     <header className="fixed w-full py-4 px-4 shadow-sm h-[--navbar-height] max-w-[1440px] flex flex-col gap-6 lg:gap-0 items-center">
       <nav className="flex flex-row justify-between items-center w-full mx-auto">
@@ -150,7 +159,10 @@ const NavBar = () => {
                     Profile
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="cursor-pointer bg-red-600 text-white hover:bg-red-500">
+                  <DropdownMenuItem
+                    onClick={handleLogout}
+                    className="cursor-pointer bg-red-600 text-white hover:bg-red-500"
+                  >
                     <LogOut className="text-white" />
                     Sign Out
                   </DropdownMenuItem>
