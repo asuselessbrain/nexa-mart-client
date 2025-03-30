@@ -28,6 +28,13 @@ export const loginAction = async (data: FieldValues) => {
       },
       body: JSON.stringify(data),
     });
+
+    if (!res.ok) {
+      const errorText = await res.text(); // Read response as text
+      console.error("Error response:", errorText); // Log the error response (for debugging)
+      throw new Error(`Login failed with status: ${res.status}`);
+    }
+    
     const result = await res.json();
 
     if (result.success) {

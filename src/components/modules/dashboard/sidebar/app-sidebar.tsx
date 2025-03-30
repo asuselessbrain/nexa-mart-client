@@ -12,6 +12,9 @@ import {
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { NavMain } from "./nav-main";
@@ -95,10 +98,23 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="text-2xl font-semibold">
-        <div className="flex items-center gap-2">
-          <Logo />
-          <h2 className="text-2xl font-semibold">NextMart</h2>
-        </div>
+      <SidebarMenu>
+      <SidebarMenuItem>
+            <SidebarMenuButton
+              size="lg"
+              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+            >
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+                <Logo />
+              </div>
+              <div className="grid flex-1 text-left text-3xl leading-tight">
+                <span className="truncate font-semibold">
+                  Next Mart
+                </span>
+              </div>
+            </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

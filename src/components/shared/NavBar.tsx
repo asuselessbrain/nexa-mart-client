@@ -146,9 +146,11 @@ const NavBar = () => {
                     My Account
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  <Link href='/user'>
                   <DropdownMenuItem className="cursor-pointer">
                     Dashboard
                   </DropdownMenuItem>
+                  </Link>
                   <DropdownMenuItem className="cursor-pointer">
                     Create Shop
                   </DropdownMenuItem>
